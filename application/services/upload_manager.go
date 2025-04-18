@@ -110,7 +110,7 @@ func (vu *VideoUpload) uploadWorker(in chan int, returnChan chan string, uploadC
 		returnChan <- ""
 	}
 
-	returnChan <- "uploaded completed"
+	returnChan <- "upload completed"
 }
 
 func getClientUpload() (*s3.Client, context.Context, error) {
