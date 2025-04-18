@@ -3,3 +3,47 @@ services:
     build: .
     volumes:
       - .:/go/src
+    environment:
+      - AWS_ACCESS_KEY_ID=localstack
+      - AWS_SECRET_ACCESS_KEY=localstack
+      - AWS_REGION=us-east-1
+      - AWS_ENDPOINT=http://localstack:4566
+    networks:
+      - app-network
+    depends_on:
+      - localstack
+
+  localstack:
+    image: localstack/localstack:latest
+    environment:
+      - SERVICES=s3
+      - DEBUG=1
+      - DATA_DIR=/tmp/localstack/data
+      - DOCKER_HOST=unix:///var/run/docker.sock
+      - AWS_ACCESS_KEY_ID=localstack
+      - AWS_SECRET_ACCESS_KEY=localstack
+      - AWS_DEFAULT_REGION=us-east-1
+    ports:
+      - "4566:4566"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "localstack-data:/tmp/localstack/data"
+    networks:
+      - app-network
+  
+  localstack-setup:
+    image: amazon/aws-cli
+    volumes:
+      - ./.docker/localstack:/scripts
+    entrypoint: ["/scripts/init-localstack.sh"]
+    networks:
+      - app-network
+    depends_on:
+      - localstack
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  localstack-data:
