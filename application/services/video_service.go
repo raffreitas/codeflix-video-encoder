@@ -2,8 +2,11 @@ package services
 
 import (
 	"context"
+	"fmt"
 	"io"
+	"log"
 	"os"
+	"os/exec"
 	"path/filepath"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -69,4 +72,31 @@ func (v *VideoService) Download(bucketName string) error {
 	}
 
 	return nil
+}
+
+func (v *VideoService) Fragment() error {
+	tempDir := os.TempDir()
+	filePath := filepath.Join(tempDir, v.Video.ID)
+	err := os.Mkdir(filePath, os.ModePerm)
+	if err != nil {
+		return err
+	}
+	fmt.Println(filepath.Join(filePath + ".mp4"))
+
+	source := filepath.Join(filePath + ".mp4")
+	target := filepath.Join(filePath + ".frag")
+
+	cmd := exec.Command("mp4fragment", source, target)
+	output, err := cmd.CombinedOutput()
+	if err != nil {
+		return err
+	}
+	printOutput(output)
+	return nil
+}
+
+func printOutput(out []byte) {
+	if len(out) > 0 {
+		log.Printf("======> Output: %s\n", string(out))
+	}
 }
