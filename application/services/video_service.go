@@ -95,6 +95,55 @@ func (v *VideoService) Fragment() error {
 	return nil
 }
 
+func (v *VideoService) Encode() error {
+	tempDir := os.TempDir()
+	filePath := filepath.Join(tempDir, v.Video.ID)
+
+	cmdArgs := []string{}
+	cmdArgs = append(cmdArgs, filePath+".frag")
+	cmdArgs = append(cmdArgs, "--use-segments-timeline")
+	cmdArgs = append(cmdArgs, "-o")
+	cmdArgs = append(cmdArgs, filePath)
+	cmdArgs = append(cmdArgs, "-f")
+	cmdArgs = append(cmdArgs, "--exec-dir")
+	cmdArgs = append(cmdArgs, "/opt/bento4/bin")
+	cmd := exec.Command("mp4dash", cmdArgs...)
+
+	output, err := cmd.CombinedOutput()
+
+	if err != nil {
+		return err
+	}
+
+	printOutput(output)
+
+	return nil
+}
+
+func (v *VideoService) Finish() error {
+	tempDir := os.TempDir()
+	filePath := filepath.Join(tempDir, v.Video.ID)
+	err := os.Remove(filePath + ".mp4")
+	if err != nil {
+		log.Println("error removing mp4 " + v.Video.ID + ".mp4")
+		return err
+	}
+	err = os.Remove(filePath + ".frag")
+	if err != nil {
+		log.Println("error removing frag " + v.Video.ID + ".frag")
+		return err
+	}
+
+	err = os.RemoveAll(filePath)
+	if err != nil {
+		log.Println("error removing dir: " + filePath)
+	}
+
+	log.Println("files have been removed: " + v.Video.ID)
+
+	return nil
+}
+
 func printOutput(out []byte) {
 	if len(out) > 0 {
 		log.Printf("======> Output: %s\n", string(out))
