@@ -3,9 +3,9 @@ package domain_test
 import (
 	"testing"
 	"time"
-	"video-encoder/domain"
 
 	"github.com/google/uuid"
+	"github.com/raffreitas/codeflix-video-encoder/domain"
 	"github.com/stretchr/testify/require"
 )
 

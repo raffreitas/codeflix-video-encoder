@@ -3,11 +3,11 @@ package repositories_test
 import (
 	"testing"
 	"time"
-	"video-encoder/application/repositories"
-	"video-encoder/domain"
-	"video-encoder/framework/database"
 
 	"github.com/google/uuid"
+	"github.com/raffreitas/codeflix-video-encoder/application/repositories"
+	"github.com/raffreitas/codeflix-video-encoder/domain"
+	"github.com/raffreitas/codeflix-video-encoder/framework/database"
 	"github.com/stretchr/testify/require"
 )
 

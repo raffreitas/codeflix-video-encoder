@@ -2,8 +2,8 @@ package database
 
 import (
 	"log"
-	"video-encoder/domain"
 
+	"github.com/raffreitas/codeflix-video-encoder/domain"
 	"gorm.io/driver/postgres"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"

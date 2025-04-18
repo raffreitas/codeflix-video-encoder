@@ -2,9 +2,9 @@ package repositories
 
 import (
 	"fmt"
-	"video-encoder/domain"
 
 	"github.com/google/uuid"
+	"github.com/raffreitas/codeflix-video-encoder/domain"
 	"gorm.io/gorm"
 )
 

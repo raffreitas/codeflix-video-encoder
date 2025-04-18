@@ -1,4 +1,4 @@
-module video-encoder
+module github.com/raffreitas/codeflix-video-encoder
 
 go 1.24.2
 
