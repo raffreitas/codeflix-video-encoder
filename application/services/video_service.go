@@ -2,7 +2,6 @@ package services
 
 import (
 	"context"
-	"fmt"
 	"io"
 	"log"
 	"os"
@@ -81,8 +80,6 @@ func (v *VideoService) Fragment() error {
 	if err != nil {
 		return err
 	}
-	fmt.Println(filepath.Join(filePath + ".mp4"))
-
 	source := filepath.Join(filePath + ".mp4")
 	target := filepath.Join(filePath + ".frag")
 
@@ -101,12 +98,12 @@ func (v *VideoService) Encode() error {
 
 	cmdArgs := []string{}
 	cmdArgs = append(cmdArgs, filePath+".frag")
-	cmdArgs = append(cmdArgs, "--use-segments-timeline")
+	cmdArgs = append(cmdArgs, "--use-segment-timeline")
 	cmdArgs = append(cmdArgs, "-o")
 	cmdArgs = append(cmdArgs, filePath)
 	cmdArgs = append(cmdArgs, "-f")
 	cmdArgs = append(cmdArgs, "--exec-dir")
-	cmdArgs = append(cmdArgs, "/opt/bento4/bin")
+	cmdArgs = append(cmdArgs, "/opt/bento4/bin/")
 	cmd := exec.Command("mp4dash", cmdArgs...)
 
 	output, err := cmd.CombinedOutput()
