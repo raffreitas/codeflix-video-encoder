@@ -36,4 +36,7 @@ func TestVideoServiceUpload(t *testing.T) {
 	result := <-doneUpload
 
 	require.Equal(t, "upload completed", result)
+
+	err = videoService.Finish()
+	require.Nil(t, err)
 }
