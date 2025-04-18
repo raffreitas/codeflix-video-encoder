@@ -2,6 +2,7 @@ package database
 
 import (
 	"log"
+	"video-encoder/domain"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/driver/sqlite"
@@ -58,7 +59,7 @@ func (d *Database) Connect() (*gorm.DB, error) {
 	}
 
 	if d.AutoMigrateDb {
-		err = d.Db.AutoMigrate()
+		err = d.Db.AutoMigrate(&domain.Video{}, &domain.Job{})
 		if err != nil {
 			return nil, err
 		}
