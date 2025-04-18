@@ -27,7 +27,7 @@ services:
       - "4566:4566"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
-      - "localstack-data:/tmp/localstack/data"
+      - "localstack-data:/var/lib/localstack"
     networks:
       - app-network
   
@@ -36,6 +36,11 @@ services:
     volumes:
       - ./.docker/localstack:/scripts
     entrypoint: ["/scripts/init-localstack.sh"]
+    environment:
+      - AWS_ACCESS_KEY_ID=localstack
+      - AWS_SECRET_ACCESS_KEY=localstack
+      - AWS_DEFAULT_REGION=us-east-1
+      - AWS_ENDPOINT=http://localstack:4566
     networks:
       - app-network
     depends_on:
