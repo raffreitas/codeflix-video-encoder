@@ -9,7 +9,7 @@ echo "Esperando o LocalStack iniciar..."
 sleep 10
 
 echo "Criando bucket S3..."
-aws --endpoint-url=http://localstack:4566 s3 mb s3://codeflix-videos
+aws --endpoint-url=http://localstack:4566 s3 mb s3://codeflix-local
 
 echo "Listando buckets S3..."
 aws --endpoint-url=http://localstack:4566 s3 ls

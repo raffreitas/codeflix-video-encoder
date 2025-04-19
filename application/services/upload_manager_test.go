@@ -17,7 +17,7 @@ func TestVideoServiceUpload(t *testing.T) {
 	videoService.VideoRepository = repo
 	videoService.Video = video
 
-	err := videoService.Download("codeflix-videos")
+	err := videoService.Download("codeflix-local")
 	require.Nil(t, err)
 
 	err = videoService.Fragment()
@@ -27,7 +27,7 @@ func TestVideoServiceUpload(t *testing.T) {
 	require.Nil(t, err)
 
 	videoUpload := services.NewVideoUpload()
-	videoUpload.OutputBucket = "codeflix-videos"
+	videoUpload.OutputBucket = "codeflix-local"
 	videoUpload.VideoPath = filepath.Join(os.TempDir(), video.ID)
 
 	doneUpload := make(chan string)

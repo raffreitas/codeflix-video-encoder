@@ -35,7 +35,7 @@ func TestVideoServiceDownload(t *testing.T) {
 	videoService.VideoRepository = repo
 	videoService.Video = video
 
-	err := videoService.Download("codeflix-videos")
+	err := videoService.Download("codeflix-local")
 	require.Nil(t, err)
 
 	err = videoService.Fragment()
