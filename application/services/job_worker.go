@@ -3,6 +3,7 @@ package services
 import (
 	"encoding/json"
 	"os"
+	"sync"
 	"time"
 
 	"github.com/google/uuid"
@@ -17,6 +18,8 @@ type JobWorkerResult struct {
 	Error   error
 }
 
+var Mutex = &sync.Mutex{}
+
 func JobWorker(messageChannel chan amqp.Delivery, returnChan chan JobWorkerResult, jobService JobService, job domain.Job, workerId int) {
 	for message := range messageChannel {
 		err := utils.IsJson(string(message.Body))
@@ -25,8 +28,10 @@ func JobWorker(messageChannel chan amqp.Delivery, returnChan chan JobWorkerResul
 			continue
 		}
 
+		Mutex.Lock()
 		err = json.Unmarshal(message.Body, &jobService.VideoService.Video)
 		jobService.VideoService.Video.ID = uuid.NewString()
+		Mutex.Unlock()
 
 		if err != nil {
 			returnChan <- returnJobResult(domain.Job{}, message, err)
@@ -39,7 +44,10 @@ func JobWorker(messageChannel chan amqp.Delivery, returnChan chan JobWorkerResul
 			continue
 		}
 
+		Mutex.Lock()
 		err = jobService.VideoService.InsertVideo()
+		Mutex.Unlock()
+
 		if err != nil {
 			returnChan <- returnJobResult(domain.Job{}, message, err)
 			continue
@@ -51,7 +59,10 @@ func JobWorker(messageChannel chan amqp.Delivery, returnChan chan JobWorkerResul
 		job.Status = "STARTING"
 		job.CreatedAt = time.Now()
 
+		Mutex.Lock()
 		_, err = jobService.JobRepository.Insert(&job)
+		Mutex.Unlock()
+
 		if err != nil {
 			returnChan <- returnJobResult(domain.Job{}, message, err)
 			continue
