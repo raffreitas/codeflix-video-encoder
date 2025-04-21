@@ -25,7 +25,7 @@ func NewRabbitMQ() *RabbitMQ {
 		ConsumerName:      os.Getenv("RABBITMQ_CONSUMER_NAME"),
 		ConsumerQueueName: os.Getenv("RABBITMQ_CONSUMER_QUEUE_NAME"),
 		AutoAck:           false,
-		Args:              amqp.Table{},
+		Args:              rabbitMQArgs,
 	}
 }
 
@@ -57,7 +57,7 @@ func (r *RabbitMQ) Consume(messageChannel chan amqp.Delivery) {
 		false,          // exclusive
 		false,          // no-local
 		false,          // no-wait
-		r.Args,         // arguments
+		nil,            // arguments
 	)
 	failOnError(err, "Failed to register a consumer")
 

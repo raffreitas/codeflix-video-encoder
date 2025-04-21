@@ -20,10 +20,13 @@ services:
     volumes: 
       - ./.docker/pg_data:/var/lib/postgresql/data
     environment:
+      POSTGRES_USER: root
       POSTGRES_PASSWORD: root
       POSTGRES_DB: encoder
     ports:
       - 5432:5432
+    networks:
+      - app-network
 
   rabbitmq:
     image: rabbitmq:3-management

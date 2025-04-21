@@ -25,7 +25,7 @@ func init() {
 		log.Fatalf("Error parsing boolean env var")
 	}
 
-	debug, err := strconv.ParseBool("DEBUG")
+	debug, err := strconv.ParseBool(os.Getenv("DEBUG"))
 	if err != nil {
 		log.Fatalf("Error parsing boolean env var")
 	}
