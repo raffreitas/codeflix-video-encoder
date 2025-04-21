@@ -13,6 +13,18 @@ services:
     depends_on:
       - localstack
 
+  db:
+    image: postgres
+    restart: always
+    tty: true
+    volumes: 
+      - ./.docker/pg_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: encoder
+    ports:
+      - 5432:5432
+
   rebbitmq:
     image: rabbitmq:3-management
     ports:
