@@ -106,6 +106,16 @@ func (j *JobService) changeJobStatus(status string) error {
 	return nil
 }
 
+func (v *VideoService) InsertVideo() error {
+	_, err := v.VideoRepository.Insert(v.Video)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (j *JobService) failJob(error error) error {
 	j.Job.Status = "FAILED"
 	j.Job.Error = error.Error()
